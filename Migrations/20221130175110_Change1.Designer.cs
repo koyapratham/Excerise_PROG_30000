@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(Database))]
-    [Migration("20221130165206_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20221130175110_Change1")]
+    partial class Change1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,36 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Professors");
+                });
+
+            modelBuilder.Entity("CourseProfessor", b =>
+                {
+                    b.Property<Guid>("coursesId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("professorsId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("coursesId", "professorsId");
+
+                    b.HasIndex("professorsId");
+
+                    b.ToTable("CourseProfessor");
+                });
+
+            modelBuilder.Entity("CourseProfessor", b =>
+                {
+                    b.HasOne("API.Models.Course", null)
+                        .WithMany()
+                        .HasForeignKey("coursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Models.Professor", null)
+                        .WithMany()
+                        .HasForeignKey("professorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

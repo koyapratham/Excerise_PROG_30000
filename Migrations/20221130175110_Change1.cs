@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Change1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,11 +36,43 @@ namespace API.Migrations
                 {
                     table.PrimaryKey("PK_Professors", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "CourseProfessor",
+                columns: table => new
+                {
+                    coursesId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    professorsId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseProfessor", x => new { x.coursesId, x.professorsId });
+                    table.ForeignKey(
+                        name: "FK_CourseProfessor_Courses_coursesId",
+                        column: x => x.coursesId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseProfessor_Professors_professorsId",
+                        column: x => x.professorsId,
+                        principalTable: "Professors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CourseProfessor_professorsId",
+                table: "CourseProfessor",
+                column: "professorsId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CourseProfessor");
+
             migrationBuilder.DropTable(
                 name: "Courses");
 

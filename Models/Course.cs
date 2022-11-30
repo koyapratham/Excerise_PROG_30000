@@ -10,7 +10,7 @@ namespace API.Models
         public Guid Id { get; set; }
         public string title {get; set; }
         public int numberOfCredits {get; set; }
-        List<Professor> professors = new List<Professor>();
+        public List<Professor> professors  { get; set; }
 
     }
 }

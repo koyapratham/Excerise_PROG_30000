@@ -10,6 +10,6 @@ namespace API.Models
         public Guid Id { get; set; }
         public string name { get; set; }
         public bool isFullTime { get; set; }
-        List<Course> courses = new List<Course>();
+        public List<Course> courses  { get; set; }
     }
 }
